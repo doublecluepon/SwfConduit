@@ -1,1 +1,5 @@
-This is a readme
+To run DCServer:
+
+cd bin
+twistd -ny dcserver.tac
+
