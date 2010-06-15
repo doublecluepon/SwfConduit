@@ -27,8 +27,13 @@ def add_services( service_parent ):
 
         module  = _get_mod( cfg.get( sect, "package" ) )
 
+        # Collect all the configuration
+        server_config = {}
+        for key, value in cfg.items( sect ):
+            server_config[key] = value
+
         # Init a new server
-        server  = module.Server()
+        server  = module.Server(server_config)
 
         # Initialize a new factory for every server
         factory = dcserver.factory.Factory(server)
