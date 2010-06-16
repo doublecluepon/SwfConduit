@@ -17,7 +17,11 @@ class Protocol( Protocol ):
         pass
 
     def dataRecieved( self, data ):
-        """ Read an object from the data """
+        """ Read an event from the data """
+
+        # Pass the event to the session?
+        # Pass the event to the server?
+        # BAIL OUT!
         pass
 
 

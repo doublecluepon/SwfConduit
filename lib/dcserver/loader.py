@@ -3,6 +3,7 @@ import sys
 import ConfigParser
 import twisted.application.internet
 import dcserver.factory
+import dcserver.socketpolicy
 
 cfg = ConfigParser.SafeConfigParser()
 
@@ -19,6 +20,10 @@ def _get_mod(modulePath):
 
 def add_services( service_parent ):
     """ Add services to the given twisted service_parent """
+
+    # Create the service to serve the socket policy
+    dcserver.socketpolicy.add_service( service_parent )
+
     # Each section defines a plugin
     for sect in cfg.sections():
         # Start the appropriate listeners and set up connection handlers
