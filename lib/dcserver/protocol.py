@@ -30,8 +30,11 @@ class Protocol( Protocol ):
         self.istream.append( data )
 
         # Read all the objects from the data
+        count   = 0
         while ( not self.istream.at_eof() ):
-            event = self.decoder.readObject()
+            event = self.decoder.readElement()
+            #self.istream.consume()
+            count = count + 1
             if not isinstance( event, Event ):
                 # Why do we always receive a None object? Connection?
                 print "Unknown event: %s" % event
@@ -49,7 +52,7 @@ class Protocol( Protocol ):
                 # Pass the event to the session?
                 # Pass the event to the server?
                 # BAIL OUT!
-        print "Done!"
+        print "Received %i objects!" % count
         pass
 
 

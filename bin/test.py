@@ -46,8 +46,8 @@ class AmfSocketClient(object):
 
         # Create an object to send
         event   = Event()
-        event.timestamp = 123456789
-        event.type      = "hello"
+        event.timestamp = 12345678910111213141515
+        event.type      = "hello world i love you this is a really long string because i'm testing something awesome"
         self.encoder.writeObject( event )
         value = self.stream.getvalue()
 
@@ -55,11 +55,11 @@ class AmfSocketClient(object):
             self.sock.send( value )
         except socket.error, e:
             raise Exception("Can't connect: %s" % e[1])
-        finally:
-            self.stream.truncate()
+
+        self.stream.consume()
 
         # read from server
-        amf = self.sock.recv(1024)
+        amf = self.sock.recv(100)
 
         if amf == '':
             print "Connection closed."
@@ -67,12 +67,12 @@ class AmfSocketClient(object):
         self.istream.append( amf )
         count = 0
         while ( not self.istream.at_eof() ):
-            event = self.decoder.readObject()
+            event = self.decoder.readElement()
             if isinstance( event, Event ):
                 count = count + 1
         print "Recieved %i objects!" % count
 
-        self.istream.truncate()
+        self.istream.consume()
         time.sleep(1)
         return self.start()
 
