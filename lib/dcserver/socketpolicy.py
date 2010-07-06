@@ -3,6 +3,8 @@
 
 Copy/pasted from PyAMF library
 
+TODO: Autogenerate the policy based on the configuration file
+
 """
 
 import os
