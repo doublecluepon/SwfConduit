@@ -1,12 +1,29 @@
 
+"""
+
+dcserver.session -- A single client connection to a server
+
+A new Session is spawned by a Server when a client connects. The Session 
+stores persistent data about the client connected, like user, character, 
+current task, etc...
+
+The Session delegates all event handling to the Protocol (client) or the
+Server (server).
+
+"""
+
+from uuid import uuid4
+
 class Session(object):
     protocol    = None
     server      = None
+    id          = None
 
     def __init__( self, server, protocol ):
         """ Initialize a new session """
         self.server     = server
         self.protocol   = protocol
+        self.id         = uuid4()
 
     def close( self ):
         """ Close the session """

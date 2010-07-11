@@ -1,6 +1,10 @@
 
 """
 
+dcserver.socketpolicy -- Handle requests for the Socket Policy file
+
+This Twisted application handles all requests for the Socket Policy file.
+
 Copy/pasted from PyAMF library
 
 TODO: Autogenerate the policy based on the configuration file
@@ -13,8 +17,6 @@ import twisted.internet.protocol
 
 policy_file = os.path.normpath( os.path.join( __file__, "..", "..", "..", "etc", "socket-policy.xml" ) )
 policy_port = 843
-
-
 
 class SocketPolicyProtocol(twisted.internet.protocol.Protocol):
     """

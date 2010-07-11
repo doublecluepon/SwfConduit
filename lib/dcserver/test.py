@@ -1,4 +1,13 @@
 
+"""
+
+dcserver.test -- A test server
+
+This server tests the event handling of DCServer. It also serves as a 
+reference for your own plugins
+
+"""
+
 import pyamf
 import dcserver.server
 import dcserver.session

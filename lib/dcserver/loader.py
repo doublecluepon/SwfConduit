@@ -1,4 +1,14 @@
 
+"""
+
+dcserver.loader -- Load all the DCServer plugins and prepare for running
+
+The loader reads the config file, loads the plugin packages, creates the 
+DCServer Server and Twisted Factory, and sets everything up for the 
+twistd daemon.
+
+"""
+
 import sys
 import ConfigParser
 import twisted.application.internet
@@ -9,11 +19,14 @@ from twisted.python import log
 cfg = ConfigParser.SafeConfigParser()
 
 def _get_mod(modulePath):
+    """ Load and return the given module """
     try:
+        # Check if it's already loaded
         aMod = sys.modules[modulePath]
         if not isinstance(aMod, types.ModuleType):
             raise KeyError
     except KeyError:
+        # Not loaded, load it
         # The last [''] is very important!
         aMod = __import__(modulePath, globals(), locals(), [''])
         sys.modules[modulePath] = aMod

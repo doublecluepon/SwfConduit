@@ -1,5 +1,12 @@
 
-import sys
+"""
+
+dcserver.factory -- The Twisted Factory for DCServer
+
+A very thin persistence layer to keep track of the Server object
+
+"""
+
 import twisted.internet.protocol
 import dcserver.protocol
 
