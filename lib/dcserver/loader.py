@@ -4,6 +4,7 @@ import ConfigParser
 import twisted.application.internet
 import dcserver.factory
 import dcserver.socketpolicy
+from twisted.python import log
 
 cfg = ConfigParser.SafeConfigParser()
 

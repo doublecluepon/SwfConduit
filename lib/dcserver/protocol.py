@@ -3,9 +3,6 @@ import pyamf
 from twisted.internet.protocol import Protocol
 from dcserver.event import Event
 
-# Register class so we can read objects of this class
-pyamf.register_class( Event, "dcserver.event" )
-
 class Protocol( Protocol ):
     encoding    = pyamf.AMF3
 
@@ -17,43 +14,34 @@ class Protocol( Protocol ):
 
     def connectionMade( self ):
         """ Initialize a new user session """
-        print "Connection Made"
-        pass
+        self.session    = self.factory.server.openSession( self )
 
     def connectionLost( self, reason ):
         """ Deinit a session """
-        print "Connection Lost"
-        pass
+        self.session.close()
 
     def dataReceived( self, data ):
         """ Read an event from the data """
         self.istream.append( data )
 
         # Read all the objects from the data
-        count   = 0
         while ( not self.istream.at_eof() ):
+            self.decoder.context.clear()
             event = self.decoder.readElement()
-            #self.istream.consume()
-            count = count + 1
             if not isinstance( event, Event ):
-                # Why do we always receive a None object? Connection?
                 print "Unknown event: %s" % event
             else:
-                print "Event %s" % event
-                # Write an "ack" event
-                ack = Event()
-                ack.type = "Ack"
-                ack.timestamp = "234567890"
+                print "Event {}: {}" % event, event.timestamp
+                self.session.fireEvent( event )
 
-                self.encoder.writeObject( ack )
-                self.transport.write( self.ostream.getvalue() )
-                self.ostream.truncate()
-
-                # Pass the event to the session?
-                # Pass the event to the server?
-                # BAIL OUT!
-        print "Received %i objects!" % count
-        pass
-
+    def sendEvent( self, event ):
+        """ Send an event object to the client """
+        self.encoder.context.clear()
+        # Encode the object
+        self.encoder.writeObject( event )
+        # Get the object from the output stream and write to the socket
+        self.transport.write( self.ostream.getvalue() )
+        # Clear the output stream
+        self.ostream.truncate()
 
 

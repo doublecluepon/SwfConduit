@@ -1,0 +1,1 @@
+﻿package dcserver.test {	import dcserver.Event;		public class HelloEvent extends Event {		public function HelloEvent( ) {		}	}}

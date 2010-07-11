@@ -17,11 +17,13 @@ sys.path.append( os.path.normpath( os.path.join( current_dir, "..", "lib" ) ) )
 import socket
 import pyamf
 from dcserver.event import Event
+from dcserver.test import TickEvent, HelloEvent
 
 appPort = 7000
 host    = '127.0.0.1'
 
-pyamf.register_class( Event, "dcserver.event" )
+pyamf.register_class( TickEvent, "dcserver.test.TickEvent" )
+pyamf.register_class( HelloEvent, "dcserver.test.HelloEvent" )
 
 class AmfSocketClient(object):
     encoding    = pyamf.AMF3
@@ -38,6 +40,12 @@ class AmfSocketClient(object):
         try:
             self.sock.connect((host, port))
             print "Connected to server.\n"
+            event   = HelloEvent()
+            self.encoder.writeObject( event )
+            value   = self.stream.getvalue()
+            self.sock.send( value )
+            self.stream.consume()
+
         except socket.error, e:
             raise Exception("Can't connect: %s" % e[1])
 
@@ -45,9 +53,7 @@ class AmfSocketClient(object):
         msg = ''
 
         # Create an object to send
-        event   = Event()
-        event.timestamp = 12345678910111213141515
-        event.type      = "hello world i love you this is a really long string because i'm testing something awesome"
+        event       = TickEvent()
         self.encoder.writeObject( event )
         value = self.stream.getvalue()
 
@@ -59,18 +65,20 @@ class AmfSocketClient(object):
         self.stream.consume()
 
         # read from server
+        print "Reading..."
         amf = self.sock.recv(100)
 
         if amf == '':
             print "Connection closed."
 
         self.istream.append( amf )
-        count = 0
+        got_events = []
         while ( not self.istream.at_eof() ):
             event = self.decoder.readElement()
-            if isinstance( event, Event ):
-                count = count + 1
-        print "Recieved %i objects!" % count
+            got_events.append( event )
+        print "Recieved %s objects!" % len( got_events )
+        for event in got_events:
+            print "Event: %s; Time: %s" % ( event, event.timestamp )
 
         self.istream.consume()
         time.sleep(1)

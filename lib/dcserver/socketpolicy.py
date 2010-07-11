@@ -11,7 +11,7 @@ import os
 import twisted.application.internet
 import twisted.internet.protocol
 
-policy_file = os.path.normpath( os.path.join( __file__, "..", "..", "etc", "socket-policy.xml" ) )
+policy_file = os.path.normpath( os.path.join( __file__, "..", "..", "..", "etc", "socket-policy.xml" ) )
 policy_port = 843
 
 
