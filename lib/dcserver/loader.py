@@ -54,12 +54,9 @@ def add_services( service_parent ):
         # Init a new server
         server  = module.Server(server_config)
 
-        # Initialize a new factory for every server
-        factory = dcserver.factory.Factory(server)
-
         if "tcp" in proto:
             # Add a TCP listener to our server
-            twisted.application.internet.TCPServer( port, factory ).setServiceParent( service_parent )
+            twisted.application.internet.TCPServer( port, server ).setServiceParent( service_parent )
 
 
 def load_config(filename):

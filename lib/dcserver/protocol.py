@@ -16,6 +16,7 @@ from dcserver.event import Event
 
 class Protocol( Protocol ):
     encoding    = pyamf.AMF3
+    session     = None
 
     def __init__( self ):
         # Prepare the encoder and decoder
@@ -26,7 +27,7 @@ class Protocol( Protocol ):
 
     def connectionMade( self ):
         """ Initialize a new user session """
-        self.session    = self.factory.server.openSession( self )
+        self.session    = self.factory.openSession( self )
 
     def connectionLost( self, reason ):
         """ Deinit a session """

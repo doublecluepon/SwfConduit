@@ -12,11 +12,15 @@ Your Server subclass should add any necessary properties like DB connections.
 """
 
 from dcserver.session import Session
+import twisted.internet.protocol
+import dcserver.protocol
 
-class Server(object):
+
+class Server( twisted.internet.protocol.Factory ):
+    protocol        = dcserver.protocol.Protocol
+    session         = Session
     cfg             = {}
     sessions        = {}
-    session         = Session
 
     def __init__( self, cfg ):
         """ Init a new Server with the given configuration """
@@ -27,6 +31,7 @@ class Server(object):
         session = self.session( self, protocol )
         self.sessions[ session.id ] = session
         session.open()
+        print "Opening session"
         return session
 
     def closeSession( self, session ):
