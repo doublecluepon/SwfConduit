@@ -39,8 +39,6 @@ class Protocol( Protocol ):
 
         # Read all the objects from the data
         while ( not self.istream.at_eof() ):
-            # Clear the context to avoid errors
-            self.decoder.context.clear()
             # Read the element from the decoder
             event = self.decoder.readElement()
             if not isinstance( event, Event ):
