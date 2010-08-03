@@ -1,4 +1,7 @@
 
+# Copyright (c) 2010 Double Cluepon Software
+# Licensed for use under the GPL version 2.0 or later
+
 import os, sys, types
 
 # Add current bin and lib directories
