@@ -4,7 +4,7 @@
 
 """
 
-dcserver.server -- The Server instance
+swfconduit.server -- The Server instance
 
 A Server handles the overall persistence and events. It connects to databases,
 manages Sessions, caches data, handles world persistence, and does the final
@@ -14,13 +14,13 @@ Your Server subclass should add any necessary properties like DB connections.
 
 """
 
-from dcserver.session import Session
+from swfconduit.session import Session
 import twisted.internet.protocol
-import dcserver.protocol
+import swfconduit.protocol
 
 
 class Server( twisted.internet.protocol.Factory ):
-    protocol        = dcserver.protocol.Protocol
+    protocol        = swfconduit.protocol.Protocol
     session         = Session
     cfg             = {}
     sessions        = {}

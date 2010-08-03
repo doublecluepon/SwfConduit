@@ -4,7 +4,7 @@
 
 """
 
-dcserver.session -- A single client connection to a server
+swfconduit.session -- A single client connection to a server
 
 A new Session is spawned by a Server when a client connects. The Session 
 stores persistent data about the client connected, like user, character, 

@@ -4,7 +4,7 @@
 
 """
 
-dcserver.protocol -- Handle AMF in and out.
+swfconduit.protocol -- Handle AMF in and out.
 
 A single Protocol object is created for every client connection. When a 
 connection is made, the Protocol asks the Server to open a new Session.
@@ -16,7 +16,7 @@ the Session to be processed.
 
 import pyamf
 from twisted.internet.protocol import Protocol
-from dcserver.event import Event
+from swfconduit.event import Event
 
 class Protocol( Protocol ):
     encoding    = pyamf.AMF3

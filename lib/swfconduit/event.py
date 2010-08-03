@@ -4,12 +4,12 @@
 
 """
 
-dcserver.event -- Base class for DCServer events
+swfconduit.event -- Base class for SwfConduit events
 
 The Event is the basic message passed to and from the server. You should
 subclass this for your own Events.
 
-    class MyEvent( dcserver.event.Event ):
+    class MyEvent( swfconduit.event.Event ):
         myproperty  = "default"
         def fire( self, server, session ):
             # Do my task here
@@ -27,8 +27,8 @@ mypackage.events.MyEvent object, and any incoming AS3 Events of type
 Your AS3 object should then look like this:
 
     package mypackage.events {
-        import dcserver.event;
-        class MyEvent extends dcserver.event.Event {
+        import swfconduit.event;
+        class MyEvent extends swfconduit.event.Event {
             // Only public members will be passed
             public var myproperty   = "default";
             public function fire( ) {
@@ -37,7 +37,7 @@ Your AS3 object should then look like this:
         }
     }
 
-All events' properties need to be defined in both DCServer and your AS3 code, 
+All events' properties need to be defined in both SwfConduit and your AS3 code, 
 even if only one of those has defined a fire() method.
 
 """

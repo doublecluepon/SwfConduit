@@ -4,21 +4,21 @@
 
 """
 
-dcserver.test -- A test server
+swfconduit.test -- A test server
 
-This server tests the event handling of DCServer. It also serves as a 
+This server tests the event handling of swfconduit. It also serves as a 
 reference for your own plugins
 
 """
 
 import pyamf
-import dcserver.server
-import dcserver.session
-from dcserver.event import Event
+import swfconduit.server
+import swfconduit.session
+from swfconduit.event import Event
 from twisted.internet.defer import Deferred
 from twisted.internet.task import LoopingCall
 
-class Session(dcserver.session.Session):
+class Session(swfconduit.session.Session):
     def open(self):
         """ Initialize periodic events """
         self.ticker = LoopingCall( self.tick )
@@ -34,7 +34,7 @@ class Session(dcserver.session.Session):
         super(Session, self).close()
 
 
-class Server(dcserver.server.Server):
+class Server(swfconduit.server.Server):
     session     = Session
 
 class TickEvent( Event ):
@@ -47,6 +47,6 @@ class HelloEvent( Event ):
         session.sendEvent( TickEvent() )
 
 # Register events for this server
-pyamf.register_class( TickEvent, "dcserver.test.TickEvent" )
-pyamf.register_class( HelloEvent, "dcserver.test.HelloEvent" )
+pyamf.register_class( TickEvent, "swfconduit.test.TickEvent" )
+pyamf.register_class( HelloEvent, "swfconduit.test.HelloEvent" )
 

@@ -4,7 +4,7 @@
 
 """
 
-dcserver.socketpolicy -- Handle requests for the Socket Policy file
+swfconduit.socketpolicy -- Handle requests for the Socket Policy file
 
 This Twisted application handles all requests for the Socket Policy file.
 

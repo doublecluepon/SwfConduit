@@ -4,10 +4,10 @@
 
 """
 
-dcserver.loader -- Load all the DCServer plugins and prepare for running
+swfconduit.loader -- Load all the swfconduit plugins and prepare for running
 
 The loader reads the config file, loads the plugin packages, creates the 
-DCServer Server and Twisted Factory, and sets everything up for the 
+swfconduit Server and Twisted Factory, and sets everything up for the 
 twistd daemon.
 
 """
@@ -15,8 +15,8 @@ twistd daemon.
 import sys
 import ConfigParser
 import twisted.application.internet
-import dcserver.factory
-import dcserver.socketpolicy
+import swfconduit.factory
+import swfconduit.socketpolicy
 from twisted.python import log
 
 cfg = ConfigParser.SafeConfigParser()
@@ -39,7 +39,7 @@ def add_services( service_parent ):
     """ Add services to the given twisted service_parent """
 
     # Create the service to serve the socket policy
-    dcserver.socketpolicy.add_service( service_parent )
+    swfconduit.socketpolicy.add_service( service_parent )
 
     # Each section defines a plugin
     for sect in cfg.sections():
