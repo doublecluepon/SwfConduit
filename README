@@ -1,11 +1,60 @@
-To run SwfConduit
+An event-driven, bidirectional Flash socket server written in Python using 
+Twisted and PyAMF. 
 
-twistd -ny swfconduit.tac
+SwfConduit allows you to asynchronously communicate between the server and 
+clients by passing event objects over a bidirectional AMF3 socket. SwfConduit 
+uses full objects, so no messing around with serialization on either client
+or server, it all happens automatically!
+
+SwfConduit will be powering Emerald Kingdom, an MMORPG written in AS3,
+and StoryTeller, the Emerald Kingdom world builder.
+
+This is a preview release. It works, but there is little polish and only 
+the bare minimum of features are implemented.
+
+SwfConduit Requirements:
+
+1) Python 2.6
+2) Twisted
+3) PyAMF 0.6 (available from http://pyamf.org)
+
+Client Requirements:
+
+1) AMF3
+         - AMF0 does not support full object serialization
+2) Flash clients require AS3
+         - AS1/2 do not support raw binary sockets
+
+Planned features for a v1.0 release
+
+    *) Autogenerate the socket-policy.xml file
+    *) Encryption
+    *) Rich set of default events
+    *) Set of plugins for common tasks 
+    *) More documentation and examples on how to write clients
+
+Planned features for future releases
+
+    *) UDP support
+            Speed at the cost of reliability
+    *) Inter-server communications
+    *) Server clusters
+            Sessions are opened on unburneded server
+            Sessions can be moved from server to server to balance load and create a 
+            single world
+
+To run SwfConduit:
+
+    twistd -ny swfconduit.tac
 
 To build modules for SwfConduit, look at 
 
-    1) swfconduit.server    -- A server. Each application should have one
-    2) swfconduit.session   -- Keeps track of session state. Extend to add more tracking
-    3) swfconduit.event     -- A message to/from client/server. Each type of message needs a subclass
+    1) swfconduit.server
+        A server. Each application should have one
+    2) swfconduit.session
+        Keeps track of session state. Extend to add more tracking
+    3) swfconduit.event
+        A message to/from client/server. Each type of message needs an Event class
 
+Be sure to edit the socket-policy.xml file for each server you add.
 
