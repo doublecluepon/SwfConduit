@@ -1,5 +1,11 @@
-To run DCServer:
+To run SwfConduit
 
-cd bin
-twistd -ny dcserver.tac
+twistd -ny swfconduit.tac
+
+To build modules for SwfConduit, look at 
+
+    1) swfconduit.server    -- A server. Each application should have one
+    2) swfconduit.session   -- Keeps track of session state. Extend to add more tracking
+    3) swfconduit.event     -- A message to/from client/server. Each type of message needs a subclass
+
 
