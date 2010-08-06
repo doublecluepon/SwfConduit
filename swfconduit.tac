@@ -33,8 +33,8 @@ import dcserver.loader
 
 # Pull the flags
 parser = optparse.OptionParser()
-parser.add_option( "-y" )
-parser.add_option( "-n" )
+parser.add_option( "-y" )       # Parse out the twistd flag
+parser.add_option( "-n" )       # Parse out the twistd flag
 parser.add_option( "-f", "--file",
     type    = "string",
     dest    = "cfg_filename",
