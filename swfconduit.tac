@@ -15,6 +15,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
+
+swfconduit.tac - Initialize the SwfConduit
+
 """
 
 import os, sys, types
@@ -27,10 +30,6 @@ sys.path.append( os.path.normpath( os.path.join( current_dir, "lib" ) ) )
 import optparse
 import twisted.application.service
 import dcserver.loader
-
-"""
-Initialize the DCServer
-"""
 
 # Pull the flags
 parser = optparse.OptionParser()
