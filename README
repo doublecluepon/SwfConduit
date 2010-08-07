@@ -27,6 +27,7 @@ Client Requirements:
 
 Planned features for a v1.0 release
 
+    *) Automated unit testing
     *) Autogenerate the socket-policy.xml file
     *) Encryption
     *) Rich set of default events
