@@ -15,4 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---------------------------------------------------------------------------*/
 
-package dcserver.test {	import dcserver.Event;		public class TickEvent extends Event {		public function TickEvent( ) {		}	}}
+package swfconduit.test {
+	import swfconduit.Event;
+	
+	public class HelloEvent extends Event {
+		public function HelloEvent( ) {
+		}
+	}
+}

@@ -27,7 +27,7 @@ twistd daemon.
 import sys
 import ConfigParser
 import twisted.application.internet
-import swfconduit.factory
+import swfconduit.server
 import swfconduit.socketpolicy
 from twisted.python import log
 

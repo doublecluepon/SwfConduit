@@ -29,7 +29,7 @@ sys.path.append( os.path.normpath( os.path.join( current_dir, "lib" ) ) )
 
 import optparse
 import twisted.application.service
-import dcserver.loader
+import swfconduit.loader
 
 # Pull the flags
 parser = optparse.OptionParser()
@@ -44,12 +44,12 @@ parser.add_option( "-f", "--file",
 )
 options, argv = parser.parse_args()
 
-dcserver.loader.load_config( options.cfg_filename )
+swfconduit.loader.load_config( options.cfg_filename )
 
 # Initialize the services
 service_parent = twisted.application.service.MultiService()
 
-dcserver.loader.add_services( service_parent )
+swfconduit.loader.add_services( service_parent )
 
 application = twisted.application.service.Application( "SwfConduit" )
 service_parent.setServiceParent( application )
