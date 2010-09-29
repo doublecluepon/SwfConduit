@@ -16,14 +16,14 @@ sys.path.append( os.path.normpath( os.path.join( current_dir, "..", "lib" ) ) )
 
 import socket
 import pyamf
-from dcserver.event import Event
-from dcserver.test import TickEvent, HelloEvent
+from swfconduit.event import Event
+from swfconduit.test import TickEvent, HelloEvent
 
 appPort = 7000
 host    = '127.0.0.1'
 
-pyamf.register_class( TickEvent, "dcserver.test.TickEvent" )
-pyamf.register_class( HelloEvent, "dcserver.test.HelloEvent" )
+pyamf.register_class( TickEvent, "swfconduit.test.TickEvent" )
+pyamf.register_class( HelloEvent, "swfconduit.test.HelloEvent" )
 
 class AmfSocketClient(object):
     encoding    = pyamf.AMF3
