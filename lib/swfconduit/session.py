@@ -48,6 +48,10 @@ class Session(object):
         """ Fire off the event to the local server """
         self.server.fireEvent( event, self )
 
+    def open( self ):
+        """ Open the session """
+        pass
+
     def sendEvent( self, event ):
         """ Send an event to the remote client """
         self.protocol.sendEvent( event )

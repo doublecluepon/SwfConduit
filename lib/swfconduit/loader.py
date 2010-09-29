@@ -27,6 +27,7 @@ twistd daemon.
 import sys
 import ConfigParser
 import twisted.application.internet
+import twisted.application.service
 import swfconduit.server
 import swfconduit.socketpolicy
 from twisted.python import log
@@ -67,6 +68,7 @@ def add_services( service_parent ):
             server_config[key] = value
 
         # Init a new server
+        print "Adding %s" % module
         server  = module.Server(server_config)
 
         if "tcp" in proto:
@@ -78,4 +80,14 @@ def load_config(filename):
     """ Load the configuration file """
     cfg.readfp( open( filename ) )
 
+
+def start( ):
+    """ Start the conduit """
+    service_parent = twisted.application.service.MultiService()
+
+    add_services( service_parent )
+
+    application = twisted.application.service.Application( "SwfConduit" )
+    service_parent.setServiceParent( application )
+    return application
 

@@ -45,14 +45,6 @@ parser.add_option( "-f", "--file",
 options, argv = parser.parse_args()
 
 swfconduit.loader.load_config( options.cfg_filename )
-
-# Initialize the services
-service_parent = twisted.application.service.MultiService()
-
-swfconduit.loader.add_services( service_parent )
-
-application = twisted.application.service.Application( "SwfConduit" )
-service_parent.setServiceParent( application )
-
+application = swfconduit.start()
 
 # vim: ft=python
