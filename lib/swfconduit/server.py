@@ -46,7 +46,6 @@ class Server( twisted.internet.protocol.Factory ):
         session = self.session( self, protocol )
         self.sessions[ session.id ] = session
         session.open()
-        print "Opening session"
         return session
 
     def closeSession( self, session ):
