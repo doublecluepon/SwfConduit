@@ -32,7 +32,8 @@ import swfconduit.server
 import swfconduit.socketpolicy
 from twisted.python import log
 
-cfg = ConfigParser.SafeConfigParser()
+# The list of plugins we have
+plugins = []
 
 def _get_mod(modulePath):
     """ Load and return the given module """
@@ -48,38 +49,42 @@ def _get_mod(modulePath):
         sys.modules[modulePath] = aMod
     return aMod
 
+def add_plugin( config ):
+    """ Add the plugin to the list of plugins. """
+    plugins.append( config )
+
 def add_services( service_parent ):
     """ Add services to the given twisted service_parent """
 
     # Create the service to serve the socket policy
     swfconduit.socketpolicy.add_service( service_parent )
 
-    # Each section defines a plugin
-    for sect in cfg.sections():
+    for config in plugins
         # Start the appropriate listeners and set up connection handlers
-        port    = cfg.getint( sect, "port" )
-        proto   = cfg.get( sect, "proto" )
+        port    = config["port"]
+        proto   = config["proto"]
 
-        module  = _get_mod( cfg.get( sect, "package" ) )
-
-        # Collect all the configuration
-        server_config = {}
-        for key, value in cfg.items( sect ):
-            server_config[key] = value
+        module  = _get_mod( config["package"] )
 
         # Init a new server
-        print "Adding %s" % module
-        server  = module.Server(server_config)
+        server  = module.Server(config)
 
         if "tcp" in proto:
             # Add a TCP listener to our server
             twisted.application.internet.TCPServer( port, server ).setServiceParent( service_parent )
 
-
-def load_config(filename):
-    """ Load the configuration file """
+def load_from_config(filename):
+    """ Load settings from the configuration file """
+    cfg = ConfigParser.SafeConfigParser()
     cfg.readfp( open( filename ) )
 
+    # Each section defines a plugin
+    for sect in cfg.sections():
+        # Collect all the configuration
+        config  = {}
+        for key, value in cfg.items( sect ):
+            config[key] = value
+        add_plugin( config )
 
 def start( ):
     """ Start the conduit """
