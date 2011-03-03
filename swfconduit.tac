@@ -29,7 +29,7 @@ sys.path.append( os.path.normpath( os.path.join( current_dir, "lib" ) ) )
 
 import optparse
 import twisted.application.service
-import swfconduit.loader
+from swfconduit.loader import Loader
 
 # Pull the flags
 parser = optparse.OptionParser()
@@ -44,7 +44,7 @@ parser.add_option( "-f", "--file",
 )
 options, argv = parser.parse_args()
 
-swfconduit.loader.load_config( options.cfg_filename )
-application = swfconduit.start()
+loader = Loader()
+loader.load_from_config( options.cfg_filename )
+application = loader.get_application()
 
-# vim: ft=python
