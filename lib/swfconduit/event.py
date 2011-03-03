@@ -55,7 +55,7 @@ even if only one of those has defined a fire() method.
 """
 from datetime import datetime
 
-class Event( ):
+class Event( object ):
     timestamp   = None
 
     def __init__( self ):
@@ -75,3 +75,12 @@ class Event( ):
     #    output.writeObject( self.timestamp )
     #    output.writeObject( self.payload )
 
+class ErrorEvent( Event ):
+    e = None
+
+    def __init__( self, e ):
+        self.e = e
+
+    def fire( self, server, session ):
+        # Can't raise here, we already ARE an error
+        print "Whachotalkingboutwillis?" + self.__repr__()

@@ -32,13 +32,13 @@ from uuid import uuid4
 class Session(object):
     protocol    = None
     server      = None
-    id          = None
+    session_id  = ""
 
     def __init__( self, server, protocol ):
         """ Initialize a new session """
         self.server     = server
         self.protocol   = protocol
-        self.id         = uuid4()
+        self.session_id = uuid4()
 
     def close( self ):
         """ Close the session """

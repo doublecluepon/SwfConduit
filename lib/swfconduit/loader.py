@@ -24,16 +24,13 @@ twistd daemon.
 
 """
 
-import sys
+import sys, types
 import ConfigParser
 import twisted.application.internet
 import twisted.application.service
 import swfconduit.server
 import swfconduit.socketpolicy
 from twisted.python import log
-
-# The list of plugins we have
-plugins = []
 
 def _get_mod(modulePath):
     """ Load and return the given module """
@@ -49,50 +46,60 @@ def _get_mod(modulePath):
         sys.modules[modulePath] = aMod
     return aMod
 
-def add_plugin( config ):
-    """ Add the plugin to the list of plugins. """
-    plugins.append( config )
+class Loader( object ):
+    """ Load a swfconduit """
 
-def add_services( service_parent ):
-    """ Add services to the given twisted service_parent """
+    plugins = []
+    """ The list of plugins we have """
 
-    # Create the service to serve the socket policy
-    swfconduit.socketpolicy.add_service( service_parent )
+    servers = []
+    """ The list of servers we made """
 
-    for config in plugins
-        # Start the appropriate listeners and set up connection handlers
-        port    = config["port"]
-        proto   = config["proto"]
+    def add_plugin( self, config ):
+        """ Add the plugin to the list of plugins. """
+        self.plugins.append( config )
 
-        module  = _get_mod( config["package"] )
+    def add_services( self, service_parent ):
+        """ Add services to the given twisted service_parent """
 
-        # Init a new server
-        server  = module.Server(config)
+        # Create the service to serve the socket policy
+        swfconduit.socketpolicy.add_service( service_parent )
 
-        if "tcp" in proto:
-            # Add a TCP listener to our server
-            twisted.application.internet.TCPServer( port, server ).setServiceParent( service_parent )
+        for config in self.plugins:
+            # Start the appropriate listeners and set up connection handlers
+            port    = int(config["port"])
+            proto   = config["proto"]
 
-def load_from_config(filename):
-    """ Load settings from the configuration file """
-    cfg = ConfigParser.SafeConfigParser()
-    cfg.readfp( open( filename ) )
+            module  = _get_mod( config["package"] )
 
-    # Each section defines a plugin
-    for sect in cfg.sections():
-        # Collect all the configuration
-        config  = {}
-        for key, value in cfg.items( sect ):
-            config[key] = value
-        add_plugin( config )
+            # Init a new server
+            server  = module.Server(config)
+            self.servers.append( server )
 
-def start( ):
-    """ Start the conduit """
-    service_parent = twisted.application.service.MultiService()
+            if "tcp" in proto:
+                # Add a TCP listener to our server
+                twisted.application.internet.TCPServer( port, server ).setServiceParent( service_parent )
 
-    add_services( service_parent )
+    def load_from_config( self, filename ):
+        """ Load settings from the configuration file """
+        cfg = ConfigParser.SafeConfigParser()
+        cfg.readfp( open( filename ) )
 
-    application = twisted.application.service.Application( "SwfConduit" )
-    service_parent.setServiceParent( application )
-    return application
+        # Each section defines a plugin
+        for sect in cfg.sections():
+            # Collect all the configuration
+            config  = {}
+            for key, value in cfg.items( sect ):
+                config[key] = value
+            self.add_plugin( config )
+
+    def get_application( self ):
+        """ Get the twisted application with all the plugin services added """
+        service_parent = twisted.application.service.MultiService()
+
+        self.add_services( service_parent )
+
+        application = twisted.application.service.Application( "SwfConduit" )
+        service_parent.setServiceParent( application )
+        return application
 

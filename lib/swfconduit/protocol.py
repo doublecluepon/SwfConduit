@@ -52,21 +52,26 @@ class Protocol( Protocol ):
     def dataReceived( self, data ):
         """ Read an event from the data """
         # Add the data to the input stream
+        print "RECV %i BYTES" % len( data )
         self.istream.append( data )
 
         # Read all the objects from the data
         while ( not self.istream.at_eof() ):
             # Read the element from the decoder
-            event = self.decoder.readElement()
+            try:
+                event = self.decoder.readElement()
+            except IOError as error:
+                break # Not enough, wait for another dataReceived
             if not isinstance( event, Event ):
                 print "Unknown event: %s" % event
             else:
-                print "Event {}: {}" % event, event.timestamp
                 # Pass the event to the Session for handling
-                self.session.fireEvent( event )
+                print "Received event: %s" % event
+                self.receiveEvent( event )
 
     def sendEvent( self, event ):
         """ Send an event object to the client """
+        print "Sending event: %s" % event
         # Clear the context to avoid RangeError #2006 from AS3 client
         self.encoder.context.clear()
         # Encode the object
@@ -75,5 +80,9 @@ class Protocol( Protocol ):
         self.transport.write( self.ostream.getvalue() )
         # Clear the output stream
         self.ostream.truncate()
+
+    def receiveEvent( self, event ):
+        """ Receive an event """
+        self.session.fireEvent( event )
 
 

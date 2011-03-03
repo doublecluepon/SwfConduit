@@ -27,15 +27,21 @@ Your Server subclass should add any necessary properties like DB connections.
 """
 
 from swfconduit.session import Session
+from swfconduit.event import ErrorEvent
+from twisted.internet import reactor
 import twisted.internet.protocol
 import swfconduit.protocol
-
+import swfconduit.event
+import pyamf
 
 class Server( twisted.internet.protocol.Factory ):
     protocol        = swfconduit.protocol.Protocol
     session         = Session
     cfg             = {}
     sessions        = {}
+
+    # Prepare a callLater to override for testing
+    callLater   = reactor.callLater
 
     def __init__( self, cfg ):
         """ Init a new Server with the given configuration """
@@ -44,19 +50,26 @@ class Server( twisted.internet.protocol.Factory ):
     def openSession( self, protocol ):
         """ Open a user session """
         session = self.session( self, protocol )
-        self.sessions[ session.id ] = session
+        self.sessions[ session.session_id ] = session
         session.open()
         return session
 
     def closeSession( self, session ):
         """ A session is closing, clean up after it """
-        del( self.sessions[ session.id ] )
+        del( self.sessions[ session.session_id ] )
         pass
 
     def fireEvent( self, event, session ):
         """ Fire the event """
-        event.fire( self, session )
+        try:
+            event.fire( self, session )
+        except Exception as e:
+            print e
+            # Send back an error message to the client
+            session.sendEvent( ErrorEvent( e ) )
 
     def sendGlobalEvent( self, event ):
         """ Send an event to all active sessions """
         pass
+
+pyamf.register_package( swfconduit.event, 'swfconduit.event' );
