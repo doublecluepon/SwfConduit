@@ -22,7 +22,6 @@ from setuptools import setup, find_packages
 setup(
     name                = "SwfConduit",
     version             = "0.0.1",
-    package_dir         = { "" : "lib" },
-    packages            = find_packages( "lib" ),
+    packages            = find_packages( "swfconduit" ),
     install_requires    = [ "PyAMF >= .5.1" ],
 )
