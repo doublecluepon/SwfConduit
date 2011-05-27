@@ -51,9 +51,10 @@ class Protocol( Protocol ):
 
     def dataReceived( self, data ):
         """ Read an event from the data """
+        self.decoder.context.clear()
         # Add the data to the input stream
-        print "RECV %i BYTES" % len( data )
         self.istream.append( data )
+        self.istream.seek( 0 )
 
         # Read all the objects from the data
         while ( not self.istream.at_eof() ):
@@ -61,17 +62,23 @@ class Protocol( Protocol ):
             try:
                 event = self.decoder.readElement()
             except IOError as error:
-                break # Not enough, wait for another dataReceived
+                print "IOError: Need more. Only got %i" % ( self.istream.remaining() )
+                return # Not enough, wait for another dataReceived
+            except pyamf.EOStream:
+                print "EOStream: Need more. Only got %i" % ( self.istream.remaining() )
+                print "Previous byte: %s" % ( self.istream.peek(-1) )
+                return # Not enough, wait for another dataReceived
             if not isinstance( event, Event ):
                 print "Unknown event: %s" % event
             else:
                 # Pass the event to the Session for handling
-                print "Received event: %s" % event
                 self.receiveEvent( event )
+
+        # All objects read successfully, clear the istream
+        self.istream.truncate()
 
     def sendEvent( self, event ):
         """ Send an event object to the client """
-        print "Sending event: %s" % event
         # Clear the context to avoid RangeError #2006 from AS3 client
         self.encoder.context.clear()
         # Encode the object
