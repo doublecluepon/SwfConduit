@@ -47,13 +47,7 @@
 			// When enter is pressed, send the event
 			input.addEventListener( KeyboardEvent.KEY_UP, sendChat );
 
-			connect();
-		}
-
-		/**
-		 * Connect to the server and send a join event
-		 */
-		public function connect():void {
+			// Connect to the server
 			socket = new swfconduit.Socket( hostname, port );
 			socket.addEventListener( "ChatEvent", handleChat );
 		}
