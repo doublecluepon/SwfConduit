@@ -37,7 +37,7 @@ import pyamf
 class Server( twisted.internet.protocol.Factory ):
     protocol        = swfconduit.protocol.Protocol
     session         = Session
-    cfg             = {}
+    config          = {}
     sessions        = {}
 
     # Prepare a callLater to override for testing
@@ -45,7 +45,7 @@ class Server( twisted.internet.protocol.Factory ):
 
     def __init__( self, cfg ):
         """ Init a new Server with the given configuration """
-        self.cfg        = cfg
+        self.config = cfg
 
     def openSession( self, protocol ):
         """ Open a user session """
