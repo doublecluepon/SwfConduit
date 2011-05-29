@@ -1,7 +1,7 @@
 
 import os, sys, types
 
-# Add correct lib directory
+# Add SwfConduit lib directory
 current_dir  = os.getcwd()
 sys.path.append( os.path.normpath( os.path.join( current_dir, "..", ".." ) ) )
 
