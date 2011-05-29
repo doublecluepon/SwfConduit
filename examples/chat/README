@@ -2,7 +2,7 @@
 A simple chat server/client.
 
 To build the client:
-    mxmlc chat.mxml
+    mxmlc -l+=../../flex chat.mxml
     # Then open the resulting chat.swf
 
 To run the server:
