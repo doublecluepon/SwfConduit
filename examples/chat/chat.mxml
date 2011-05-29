@@ -69,8 +69,8 @@
 					nickname = input.text.substr(6); // Everything after "/nick "
 				}
 				else {
-					chatbox.appendText( "\n" + nickname + "> " + input.text );
 					socket.writeEvent( new ChatEvent( nickname, input.text ) );
+					chatbox.appendText( "\n" + nickname + "> " + input.text );
 				}
 
 				input.text = "";
