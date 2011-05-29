@@ -27,10 +27,12 @@ import pyamf
 pyamf.register_class( ChatEvent, "swfconduit.chat.ChatEvent" )
 
 # Create the SwfConduit server
-from swfconduit.loader import Loader
 from swfconduit.server import Server
-loader = Loader()
 server = Server({ "proto" : "tcp", "port" : 8000 })
+
+# Load and run SwfConduit
+from swfconduit.loader import Loader
+loader = Loader()
 loader.servers.append( server );
 application = loader.get_application()
 
