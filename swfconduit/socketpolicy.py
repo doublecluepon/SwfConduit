@@ -30,7 +30,6 @@ import os
 import twisted.application.internet
 import twisted.internet.protocol
 
-policy_file = os.path.normpath( os.path.join( __file__, "..", "..", "..", "socket-policy.xml" ) )
 policy_port = 843
 
 class SocketPolicyProtocol(twisted.internet.protocol.Protocol):
@@ -62,7 +61,7 @@ class SocketPolicyFactory(twisted.internet.protocol.Factory):
     def getPolicyFile(self, protocol):
         return open(self.policy_file, 'rt').read()
 
-def add_service( service_parent ):
+def add_service( service_parent, policy_file ):
     factory = SocketPolicyFactory( policy_file )
     twisted.application.internet.TCPServer( policy_port, factory ).setServiceParent( service_parent )
 

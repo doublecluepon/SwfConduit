@@ -65,7 +65,7 @@ class Loader( object ):
         """ Add services to the given twisted service_parent """
 
         # Create the service to serve the socket policy
-        swfconduit.socketpolicy.add_service( service_parent )
+        swfconduit.socketpolicy.add_service( service_parent, './socket-policy.xml' )
 
         for server in self.servers:
             port    = int(server.config["port"])
