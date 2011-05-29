@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 swfconduit.loader -- Load all the swfconduit plugins and prepare for running
 
-The loader reads the config file, loads the plugin packages, creates the 
+The loader reads the config file, loads the server packages, creates the 
 swfconduit Server and Twisted Factory, and sets everything up for the 
 twistd daemon.
 
@@ -49,15 +49,17 @@ def _get_mod(modulePath):
 class Loader( object ):
     """ Load a swfconduit """
 
-    plugins = []
-    """ The list of plugins we have """
-
     servers = []
     """ The list of servers we made """
 
-    def add_plugin( self, config ):
-        """ Add the plugin to the list of plugins. """
-        self.plugins.append( config )
+    def add_server( self, config ):
+        """ Create the server from the given config """
+        # Start the appropriate listeners and set up connection handlers
+        module  = _get_mod( config["package"] )
+
+        # Init a new server
+        server  = module.Server(config)
+        self.servers.append( server )
 
     def add_services( self, service_parent ):
         """ Add services to the given twisted service_parent """
@@ -65,17 +67,9 @@ class Loader( object ):
         # Create the service to serve the socket policy
         swfconduit.socketpolicy.add_service( service_parent )
 
-        for config in self.plugins:
-            # Start the appropriate listeners and set up connection handlers
-            port    = int(config["port"])
-            proto   = config["proto"]
-
-            module  = _get_mod( config["package"] )
-
-            # Init a new server
-            server  = module.Server(config)
-            self.servers.append( server )
-
+        for server in self.servers:
+            port    = int(server.config["port"])
+            proto   = server.config["proto"]
             if "tcp" in proto:
                 # Add a TCP listener to our server
                 twisted.application.internet.TCPServer( port, server ).setServiceParent( service_parent )
@@ -91,7 +85,7 @@ class Loader( object ):
             config  = {}
             for key, value in cfg.items( sect ):
                 config[key] = value
-            self.add_plugin( config )
+            self.add_server( config )
 
     def get_application( self ):
         """ Get the twisted application with all the plugin services added """
