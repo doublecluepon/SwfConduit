@@ -44,14 +44,21 @@
 			// Register our event class
 			registerClassAlias( "swfconduit.chat.ChatEvent", ChatEvent );
 
-			// When enter is pressed, send the event
-			input.addEventListener( KeyboardEvent.KEY_UP, sendChat );
-
 			// Connect to the server
 			socket = new swfconduit.Socket( hostname, port );
 			socket.addEventListener( "ChatEvent", handleChat );
+
+			// When enter is pressed, send the event
+			input.addEventListener( KeyboardEvent.KEY_UP, sendChat );
 		}
 
+		/**
+		 * Handle an incoming chat message
+		 */
+		public function handleChat(event:ChatEvent):void {
+			chatbox.appendText( "\n" + event.nickname + ": " + event.text );
+		}
+		
 		/**
 		 * Send a chat message
 		 */
@@ -70,13 +77,6 @@
 			}
 		}
 
-		/**
-		 * Handle an incoming chat message
-		 */
-		public function handleChat(event:ChatEvent):void {
-			chatbox.appendText( "\n" + event.nickname + ": " + event.text );
-		}
-		
 	]]></fx:Script>
 
 	<s:layout><s:VerticalLayout /></s:layout>
