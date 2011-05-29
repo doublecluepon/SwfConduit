@@ -1,0 +1,16 @@
+
+A simple chat server/client.
+
+To build the client:
+    mxmlc chat.mxml
+    # Then open the resulting chat.swf
+
+To run the server:
+    sudo twistd -ny chat.py
+    # In order to serve the socket-policy.xml file, swfconduit must bind to port 843
+
+=====================================================================
+
+
+
+

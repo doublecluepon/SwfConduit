@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	width="400" height="300"
+	applicationComplete="init();"
+>
+
+	<fx:Script><![CDATA[
+		
+		import flash.events.KeyboardEvent;
+
+		import swfconduit.Socket;
+		import swfconduit.chat.ChatEvent;
+
+		/**
+		 * The hostname to connect to, localhost
+		 * @default localhost
+		 */
+		public var hostname:String = "localhost";
+
+		/**
+		 * The port to connect to, 8000
+		 * @default 8000
+		 */
+		public var port:uint = 8000;
+
+		/**
+		 * The socket to the swfconduit server
+		 */
+		public var socket:swfconduit.Socket;
+
+		/**
+		 * The user's nickname
+		 */
+		[Bindable]
+		public var nickname:String = "Anonymous";
+
+		/**
+		 * Initialize the chat, get the user's nickname
+		 */
+		public function init():void {
+			// Register our event class
+			registerClassAlias( "swfconduit.chat.ChatEvent", ChatEvent );
+
+			// When enter is pressed, send the event
+			input.addEventListener( KeyboardEvent.KEY_UP, sendChat );
+
+			connect();
+		}
+
+		/**
+		 * Connect to the server and send a join event
+		 */
+		public function connect():void {
+			socket = new swfconduit.Socket( hostname, port );
+			socket.addEventListener( "ChatEvent", handleChat );
+		}
+
+		/**
+		 * Send a chat message
+		 */
+		public function sendChat(event:KeyboardEvent):void {
+			if ( event.keyCode == 13 ) {
+				// Let the user change their nickname using /nick NewName
+				if ( input.text.match('^/nick') ) {
+					nickname = input.text.substr(6); // Everything after "/nick "
+				}
+				else {
+					chatbox.appendText( "\n" + nickname + "> " + input.text );
+					socket.writeEvent( new ChatEvent( nickname, input.text ) );
+				}
+
+				input.text = "";
+			}
+		}
+
+		/**
+		 * Handle an incoming chat message
+		 */
+		public function handleChat(event:ChatEvent):void {
+			chatbox.appendText( "\n" + event.nickname + ": " + event.text );
+		}
+		
+	]]></fx:Script>
+
+	<s:layout><s:VerticalLayout /></s:layout>
+	<s:RichEditableText editable="false" id="chatbox" width="100%" height="250">
+		<s:text>*** Type /nick NEW_NAME to change your nickname</s:text>
+	</s:RichEditableText>
+	<s:TextInput id="input" width="100%" height="25" />
+	<s:Label text="You are {nickname}" height="20" />
+</s:Application>
