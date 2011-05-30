@@ -9,7 +9,7 @@ package swfconduit {
 	/**
 	 * This class handles events to and from the SwfConduit server. Though this
 	 * is a regular flash Socket, you should only send SwfConduit events using the
-	 * sendEvent() method, and you should only receive events by adding event 
+	 * writeEvent() method, and you should only receive events by adding event 
 	 * listeners for your event types.
 	 *
 	 * You should listen for the close and error events yourself.
