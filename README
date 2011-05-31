@@ -25,13 +25,12 @@ Client Requirements:
 2) Flash clients require AS3
          - AS1/2 do not support raw binary sockets
 
-Planned features for a v1.0 release
+Planned features for the 1.0 development cycle
 
     *) Automated unit testing
     *) Autogenerate the socket-policy.xml file
     *) Encryption
-    *) Rich set of default events
-    *) Set of plugins for common tasks 
+    *) Set of plugins for common tasks such as ORM, Users, and Chat
     *) More documentation and examples on how to write clients
 
 Planned features for future releases
