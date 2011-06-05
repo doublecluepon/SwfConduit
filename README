@@ -9,8 +9,11 @@ or server, it all happens automatically!
 SwfConduit will be powering Emerald Kingdom, an MMORPG written in AS3,
 and StoryTeller, the Emerald Kingdom world builder.
 
-This is a preview release. It works, but there is little polish and only 
-the bare minimum of features are implemented.
+This is a 1.0 release. It contains:
+
+1) An event-based client library for async communication with the SWFConduit server
+written in AS3
+2) An OO server system based on Twisted and PyAMF
 
 SwfConduit Requirements:
 
