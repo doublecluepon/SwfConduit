@@ -3,7 +3,7 @@ SRC = swfconduit
 DOCPATH = docs
 
 swc : $(SWC)
-doc : $(SRC)
+docs : $(SRC)
 	asdoc -source-path . -doc-sources swfconduit -output $(DOCPATH) \
 	    -package swfconduit "An AS3 Flash socket server written in Python" \
 	    -main-title="SwfConduit Client Documentation" \
