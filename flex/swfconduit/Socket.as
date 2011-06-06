@@ -12,9 +12,84 @@ package swfconduit {
 	 * writeEvent() method, and you should only receive events by adding event 
 	 * listeners for your event types.
 	 *
-	 * You should listen for the close and error events yourself.
+	 * <p>You should listen for the close and error events yourself.</p>
 	 *
 	 * @see swfconduit.Event
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/Socket.html flash.net.Socket
+	 * @see http://github.com/doublecluepon/SwfConduit/wiki/A-simple-chat-server Tutorial: A simple chat server
+	 *
+	 * @example Using Events
+	 *
+	 * <p>This example shows how to use Events with the Socket.</p>
+	 *
+	 * <listing version="3.0">
+<!-- NOTE: Leave the spaces, they create empty lines -->
+// Our Event class
+package {
+	import swfconduit.Event;
+	public class MyEvent extends swfconduit.Event {
+		public function MyEvent() { }
+	}
+}
+ 
+// Register our event class
+import flash.net.registerClassAlias;
+registerClassAlias("myproject.MyEvent",MyEvent);
+ 
+// Create a socket and send an event
+import swfconduit.Socket;
+var socket:swfconduit.Socket = new swfconduit.Socket("localhost",8000);
+socket.writeEvent(new MyEvent());
+ 
+// Listen for the event from the server
+function handleMyEvent(event:MyEvent):void {
+	trace("Got MyEvent!");
+}
+socket.addEventListener("MyEvent", handleMyEvent);
+
+</listing>
+	 * @example Extending the SwfConduit Socket
+	 *
+	 * <p>Extending the Socket can simplify creating and reusing connections. Here we
+	 * extend the Socket to create a custom "Session" class that handles all the socket
+	 * events.</p>
+	 *
+	 * <listing version="3.0">
+package {
+	import flash.events.&#42;;
+	import flash.errors.&#42;;
+	import swfconduit.Socket;
+	
+	public class Session extends swfconduit.Socket {
+		
+		public function Session(host:String="localhost", port:int=8000) {
+			super();
+			addEventListener(Event.CLOSE, closeHandler);
+			addEventListener(Event.CONNECT, connectHandler);
+			addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+			addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+			connect(host, port);
+		}
+		
+		private function closeHandler(e:Event):void {
+			trace("Socket closed");
+		}
+		
+		private function connectHandler(e:Event):void {
+			trace("Socket connected");
+		}
+		
+		private function ioErrorHandler(e:IOErrorEvent):void {
+			trace("IO Error: " + e);
+		}
+		
+		private function securityErrorHandler(e:SecurityErrorEvent):void {
+			trace("Security Error: " + e);
+		}
+	}
+}
+</listing>
+	 *
 	 */
 	public class Socket extends flash.net.Socket {
 		

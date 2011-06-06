@@ -1,0 +1,11 @@
+<overview>
+    <packages>
+        <package name="swfconduit">
+            <shortDescription>A Flash socket server written in Python</shortDescription>
+            <description>
+                SwfConduit is an AS3 (Flash) socket server written in Python using
+                Twisted and PyAMF.
+            </description>
+        </package>
+    </packages>
+</overview>
