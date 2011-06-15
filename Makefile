@@ -14,7 +14,7 @@ publish_docs : docs
 	-git ci -m'build documentation'
 	git checkout gh-pages
 	git checkout master flex/docs
-	git checkout docs
+	git checkout master docs
 	git ci -am'build documentation'
 	git push
 	git checkout master
