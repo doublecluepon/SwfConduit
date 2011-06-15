@@ -5,6 +5,7 @@ docs : server_docs client_docs
 
 server_docs :
 	cd docs; make html
+	./docs/remove_underscore.sh ./docs/build/html
 
 client_docs :
 	cd flex; make docs
