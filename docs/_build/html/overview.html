@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="SwfConduit v1.0.0 documentation" href="index.html" />
-    <link rel="next" title="Event" href="event.html" />
-    <link rel="prev" title="Welcome to SwfConduit’s documentation!" href="index.html" /> 
+    <link rel="next" title="Loader" href="loader.html" />
+    <link rel="prev" title="SwfConduit Server Documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,10 +37,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="event.html" title="Event"
+          <a href="loader.html" title="Loader"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to SwfConduit’s documentation!"
+          <a href="index.html" title="SwfConduit Server Documentation"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">SwfConduit v1.0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -53,6 +53,34 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>SwfConduit is an AMF3 socket server written in Python using Twisted and PyAMF.
+The client side uses Flash&#8217;s Socket class, so it is bidirectional, not
+service-oriented. This makes it ideal for interactive applications like games
+and chat.</p>
+<p>This document is for API and usage. Install instructions and tutorials can be
+found on <a class="reference external" href="http://github.com/doublecluepon/SwfConduit/wiki">the SwfConduit wiki</a>.</p>
+<div class="section" id="the-server">
+<h2>The Server<a class="headerlink" href="#the-server" title="Permalink to this headline">¶</a></h2>
+<p>The server is a Twisted factory with a custom Protocol to handle the AMF3
+protocol and dispatching Events. SwfConduit maintains only a thin wrapper
+around the most necessary parts, so that it can be bypassed if necessary.</p>
+<p>The server is created using the <a class="reference internal" href="loader.html#loader"><em>Loader</em></a> class, which accepts
+configuration programmatically or through a config file and sets up the
+appropriate Twisted listeners and factories.</p>
+<p>The <a class="reference internal" href="server.html#server"><em>Server</em></a> and <a class="reference internal" href="server.html#session"><em>Session</em></a> classes are the
+Twisted Factory and Protocol classes, respectively. You can extend these to
+add your own functionality. The Loader then gets told where to find the Server
+class, which knows what Session class to use.</p>
+<p><a class="reference internal" href="event.html#event"><em>Events</em></a> are the basic messages that pass between client and
+server. Each Event encapsulates data to be acted upon. Each Event has a fire()
+function that gets called when it is recieved by the server. The fire()
+function is where most of the behavior will be.</p>
+</div>
+<div class="section" id="the-client">
+<h2>The Client<a class="headerlink" href="#the-client" title="Permalink to this headline">¶</a></h2>
+<p>The client API is described in the <a class="reference external" href="http://doublecluepon.github.com/SwfConduit/flex/docs/">SwfConduit client API docs</a>. For information on
+using the client and server together, see <a class="reference external" href="http://github.com/doublecluepon/SwfConduit/wiki">the SwfConduit wiki</a> for tutorials.</p>
+</div>
 </div>
 
 
@@ -61,17 +89,21 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Overview</a><ul>
+<li><a class="reference internal" href="#the-server">The Server</a></li>
+<li><a class="reference internal" href="#the-client">The Client</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to SwfConduit&#8217;s documentation!</a></p>
+                        title="previous chapter">SwfConduit Server Documentation</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="event.html"
-                        title="next chapter">Event</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/overview.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <p class="topless"><a href="loader.html"
+                        title="next chapter">Loader</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -99,10 +131,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="event.html" title="Event"
+          <a href="loader.html" title="Loader"
              >next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to SwfConduit’s documentation!"
+          <a href="index.html" title="SwfConduit Server Documentation"
              >previous</a> |</li>
         <li><a href="index.html">SwfConduit v1.0.0 documentation</a> &raquo;</li> 
       </ul>

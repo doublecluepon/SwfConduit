@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Event &mdash; SwfConduit v1.0.0 documentation</title>
+    <title>Loader &mdash; SwfConduit v1.0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="SwfConduit v1.0.0 documentation" href="index.html" />
-    <link rel="next" title="Socket Policy" href="socketpolicy.html" />
-    <link rel="prev" title="Server" href="server.html" /> 
+    <link rel="next" title="Server" href="server.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,10 +37,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="socketpolicy.html" title="Socket Policy"
+          <a href="server.html" title="Server"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="server.html" title="Server"
+          <a href="overview.html" title="Overview"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">SwfConduit v1.0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -51,43 +51,44 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="event">
-<span id="id1"></span><h1>Event<a class="headerlink" href="#event" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-swfconduit.event"></span><p>The Event is the basic message passed to and from the server. Inherit from the
-Event class to create custom Events.:</p>
-<div class="highlight-python"><pre>class MyEvent( swfconduit.event.Event ):
-    myproperty  = "default"
-    def fire( self, server, session ):
-        # Do stuff here</pre>
-</div>
-<p>To use the event, register it with pyamf, giving the Class and the
-name of a class in the AS3 code:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyamf</span>
-<span class="n">pyamf</span><span class="o">.</span><span class="n">register_class</span><span class="p">(</span> <span class="n">MyEvent</span><span class="p">,</span> <span class="s">&quot;mypackage.events.MyEvent&quot;</span> <span class="p">)</span>
-</pre></div>
-</div>
-<p>Now the MyEvent class will be created on the client as an instance of a 
-mypackage.events.MyEvent object, and any incoming AS3 Events of type 
-&#8220;mypackage.events.MyEvent&#8221; will be created as MyEvent objects.</p>
-<p>The corresponding AS3 object should then look like this:</p>
-<div class="highlight-python"><pre>package mypackage.events {
-    import swfconduit.Event;
-    class MyEvent extends swfconduit.Event {
-        // Only public members will be passed
-        public var myproperty   = "default";
-        public function MyEvent( ) { }
-    }
-}</pre>
-</div>
-<p>All events&#8217; properties need to be defined in both server and client.
-otherwise the client will warn about missing properties.</p>
+  <div class="section" id="loader">
+<span id="id1"></span><h1>Loader<a class="headerlink" href="#loader" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-swfconduit.loader"></span><p>Load all the swfconduit plugins and prepare for running</p>
+<p>The loader reads the config file, loads the server packages, creates the 
+swfconduit Server and Twisted Factory, and sets everything up for the 
+twistd daemon.</p>
 <dl class="class">
-<dt id="swfconduit.event.Event">
-<em class="property">class </em><tt class="descclassname">swfconduit.event.</tt><tt class="descname">Event</tt><a class="headerlink" href="#swfconduit.event.Event" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="swfconduit.event.Event.fire">
-<tt class="descname">fire</tt><big>(</big><em>server</em>, <em>session</em><big>)</big><a class="headerlink" href="#swfconduit.event.Event.fire" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform the event&#8217;s task</p>
+<dt id="swfconduit.loader.Loader">
+<em class="property">class </em><tt class="descclassname">swfconduit.loader.</tt><tt class="descname">Loader</tt><a class="headerlink" href="#swfconduit.loader.Loader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a swfconduit</p>
+<dl class="method">
+<dt id="swfconduit.loader.Loader.add_server">
+<tt class="descname">add_server</tt><big>(</big><em>config</em><big>)</big><a class="headerlink" href="#swfconduit.loader.Loader.add_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the server from the given config</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swfconduit.loader.Loader.add_services">
+<tt class="descname">add_services</tt><big>(</big><em>service_parent</em><big>)</big><a class="headerlink" href="#swfconduit.loader.Loader.add_services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add services to the given twisted service_parent</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swfconduit.loader.Loader.get_application">
+<tt class="descname">get_application</tt><big>(</big><big>)</big><a class="headerlink" href="#swfconduit.loader.Loader.get_application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the twisted application with all the plugin services added</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swfconduit.loader.Loader.load_from_config">
+<tt class="descname">load_from_config</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#swfconduit.loader.Loader.load_from_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load settings from the configuration file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="swfconduit.loader.Loader.servers">
+<tt class="descname">servers</tt><a class="headerlink" href="#swfconduit.loader.Loader.servers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of servers we made</p>
 </dd></dl>
 
 </dd></dl>
@@ -101,11 +102,11 @@ otherwise the client will warn about missing properties.</p>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="server.html"
-                        title="previous chapter">Server</a></p>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="socketpolicy.html"
-                        title="next chapter">Socket Policy</a></p>
+  <p class="topless"><a href="server.html"
+                        title="next chapter">Server</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -133,10 +134,10 @@ otherwise the client will warn about missing properties.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="socketpolicy.html" title="Socket Policy"
+          <a href="server.html" title="Server"
              >next</a> |</li>
         <li class="right" >
-          <a href="server.html" title="Server"
+          <a href="overview.html" title="Overview"
              >previous</a> |</li>
         <li><a href="index.html">SwfConduit v1.0.0 documentation</a> &raquo;</li> 
       </ul>

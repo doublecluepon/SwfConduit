@@ -1,9 +1,5 @@
-.. SwfConduit documentation master file, created by
-   sphinx-quickstart on Sun Jun  5 23:39:30 2011.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to SwfConduit's documentation!
+SwfConduit Server Documentation
 ======================================
 
 Contents:
@@ -11,9 +7,10 @@ Contents:
 .. toctree::
 
     overview
-    event
-    session
+    loader
     server
+    event
+    socketpolicy
 
 Indices and tables
 ==================
