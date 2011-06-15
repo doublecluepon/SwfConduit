@@ -11,7 +11,7 @@ client_docs :
 
 publish_docs : docs
 	git add docs flex/docs
-	git ci -m'build documentation'
+	-git ci -m'build documentation'
 	git checkout gh-pages
 	git checkout master flex/docs
 	git checkout docs
