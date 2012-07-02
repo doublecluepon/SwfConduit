@@ -1,0 +1,7 @@
+
+v1.0.1
+    - Added ISocket flex interface for swfconduit sockets
+    - Added MockSocket flex library for automated testing
+
+v1.0.0
+    - Initial release of server and client libraries
