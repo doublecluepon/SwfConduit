@@ -5,6 +5,7 @@ package swfconduit {
 	import flash.events.ProgressEvent;
 	import flash.utils.ByteArray;
 	import swfconduit.Event;
+	import swfconduit.ISocket;
 
 	/**
 	 * This class handles events to and from the SwfConduit server. Though this
@@ -91,7 +92,7 @@ package {
 </listing>
 	 *
 	 */
-	public class Socket extends flash.net.Socket {
+	public class Socket extends flash.net.Socket implements swfconduit.ISocket {
 		
 		/**
 		 * Buffer of socket data, in case a complete event isn't sent in a
@@ -132,7 +133,7 @@ package {
 					return; // Don't clear it out!
 				}
 
-				if ( typeof reply == "object" ) {
+				if ( reply is swfconduit.Event ) {
 					dispatchEvent(reply);	
 				}
 				else {
