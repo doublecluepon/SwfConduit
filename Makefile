@@ -1,6 +1,9 @@
 
 SRC = swfconduit
 
+swc :
+	${MAKE} -f flex/Makefile swc
+
 docs : server_docs client_docs
 
 server_docs :
