@@ -16,6 +16,11 @@ package swfconduit {
 	public class Event extends flash.events.Event {
 
 		/**
+		 * The ID of the event
+		 */
+		public var id:int;
+
+		/**
 		 * The date/time the event was sent
 		 */
 		public var timestamp:Date;
@@ -33,6 +38,9 @@ package swfconduit {
 			type = type.slice(index+2);
 
 			super(type,true,true);
+			
+			// Create an ID that will fit inside an AMF3 int field (29 bits)
+			id = Math.floor( Math.random() * 2^29 - 2^28 - 1 );
 		}
 	}
 }
