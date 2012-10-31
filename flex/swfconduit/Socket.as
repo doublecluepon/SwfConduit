@@ -1,10 +1,12 @@
 package swfconduit {
 
 	import flash.net.Socket;
+	import flash.net.registerClassAlias;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import flash.utils.ByteArray;
 	import swfconduit.Event;
+	import swfconduit.ErrorMessage;
 	import swfconduit.ISocket;
 
 	/**
@@ -101,12 +103,19 @@ package {
 		public var buffer:ByteArray = new ByteArray();
 
 		/**
+		 * The default error handler, run if no other handler of an ErrorEvent 
+		 * message calls preventDefault() on the message.
+		 */
+		public var defaultErrorHandler:Function = function (...args):void { };
+
+		/**
 		 * Create a new SwfConduit Socket.
 		 * @param host The host to connect to
 		 * @param port The port to connect to
 		 * @see connect
 		 */
 		public function Socket(host:String=null, port:uint=0) {
+			registerClassAlias( 'swfconduit.event.ErrorEvent', ErrorMessage );
 			super(host, port);
 			addEventListener(ProgressEvent.SOCKET_DATA,handleSocketData);
 		}
@@ -135,6 +144,9 @@ package {
 
 				if ( reply is swfconduit.Event ) {
 					dispatchEvent(reply);	
+					if ( reply is ErrorMessage && !reply.isDefaultPrevented() ) {
+						defaultErrorHandler( reply );
+					}
 				}
 				else {
 					trace( "SwfConduit recieved invalid event: " + reply );
@@ -150,6 +162,13 @@ package {
 		public function writeEvent(event:swfconduit.Event):void {			
 			writeObject(event);
 			flush();
+		}
+
+		/**
+		 * Set a default error handler
+		 */
+		public function setDefaultErrorHandler( handler:Function ):void {
+			this.defaultErrorHandler = handler;
 		}
 	}
 }

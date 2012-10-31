@@ -19,5 +19,14 @@ package swfconduit {
 		 * @param port The port to connect to
 		 */
 		function connect( host:String, port:int ):void;
+		/**
+		 * Set the default error handler that will be run on ErrorMessage
+		 * messages, unless preventDefault() is called on the message
+		 */
+		function setDefaultErrorHandler( handler:Function ):void;
+		/**
+		 * Close the socket
+		 */
+		function close():void;
 	}
 }

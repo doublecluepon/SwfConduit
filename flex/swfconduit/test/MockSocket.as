@@ -76,5 +76,18 @@ package swfconduit.test {
 			dispatchEvent( event );
 		}
 
+		/**
+		 * Set the default error handler
+		 */
+		public function setDefaultErrorHandler( handler:Function ):void {
+			// TODO
+		}
+
+		/**
+		 * Close the socket
+		 */
+		public function close():void {
+
+		}
 	}
 }
