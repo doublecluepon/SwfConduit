@@ -51,6 +51,7 @@ otherwise the client will warn about missing properties.
 """
 from datetime import datetime
 from random import getrandbits
+import traceback
 
 class Event( object ):
     id = 0
@@ -82,9 +83,11 @@ class Event( object ):
 
 class ErrorEvent( Event ):
     e = None
+    traceback = ""
 
     def __init__( self, e ):
         self.e = e
+        self.traceback = traceback.format_exc()
 
     def fire( self, server, session ):
         # Can't raise here, we already ARE an error
