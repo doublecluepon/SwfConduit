@@ -40,7 +40,7 @@ package swfconduit {
 			super(type,true,true);
 			
 			// Create an ID that will fit inside an AMF3 int field (29 bits)
-			id = Math.floor( Math.random() * 2^29 - 2^28 - 1 );
+			id = int( Math.floor( Math.random() * Math.pow( 2, 29 ) - Math.pow( 2, 28 ) - 1 ) );
 		}
 	}
 }
