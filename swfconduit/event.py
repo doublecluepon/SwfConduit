@@ -50,11 +50,14 @@ otherwise the client will warn about missing properties.
 
 """
 from datetime import datetime
+from random import getrandbits
 
 class Event( object ):
-    timestamp   = None
+    id = 0
+    timestamp = None
 
     def __init__( self ):
+        self.id         = getrandbits(29) # Size of an AMF3 integer field
         self.timestamp  = datetime.now()
         pass
 
@@ -70,6 +73,12 @@ class Event( object ):
     #def __writeamf__( self, output ):
     #    output.writeObject( self.timestamp )
     #    output.writeObject( self.payload )
+
+    def reply( self, cls, *args ):
+        """ Create a reply with the given class. Will set the reply's id field appropriately """
+        reply = cls(*args)
+        reply.id = self.id
+        return reply
 
 class ErrorEvent( Event ):
     e = None
