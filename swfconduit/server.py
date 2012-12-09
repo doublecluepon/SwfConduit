@@ -31,6 +31,7 @@ import twisted.internet.protocol
 import swfconduit.protocol
 import swfconduit.event
 import pyamf
+import traceback, sys
 
 class Server( twisted.internet.protocol.Factory ):
     protocol        = swfconduit.protocol.Protocol
@@ -64,11 +65,13 @@ class Server( twisted.internet.protocol.Factory ):
     def fireEvent( self, event, session ):
         """ Fire the event """
         try:
+            #print event
             event.fire( self, session )
         except Exception as e:
-            print e
+            traceback.print_exc(file=sys.stdout)
             # Send back an error message to the client
-            session.sendEvent( ErrorEvent( e ) )
+            reply = event.reply( ErrorEvent, e )
+            session.sendEvent( reply )
 
     def sendGlobalEvent( self, event ):
         """ Send an event to all active sessions """
