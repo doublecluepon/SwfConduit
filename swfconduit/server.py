@@ -66,7 +66,7 @@ class Server( twisted.internet.protocol.Factory ):
         """ Fire the event """
         try:
             #print event
-            event.fire( self, session )
+            return event.fire( self, session )
         except Exception as e:
             traceback.print_exc(file=sys.stdout)
             # Send back an error message to the client

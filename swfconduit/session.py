@@ -46,7 +46,9 @@ class Session(object):
 
     def fireEvent( self, event ):
         """ Fire off the event to the local server """
-        self.server.fireEvent( event, self )
+        reply = self.server.fireEvent( event, self )
+        if ( reply is not None ):
+            self.sendEvent( reply )
 
     def open( self ):
         """ Open the session """
