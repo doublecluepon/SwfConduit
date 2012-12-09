@@ -31,6 +31,7 @@ import twisted.internet.protocol
 import swfconduit.protocol
 import swfconduit.event
 import pyamf
+import traceback, sys
 
 class Server( twisted.internet.protocol.Factory ):
     protocol        = swfconduit.protocol.Protocol
@@ -54,17 +55,23 @@ class Server( twisted.internet.protocol.Factory ):
 
     def closeSession( self, session ):
         """ A session is closing, clean up after it """
-        del( self.sessions[ session.session_id ] )
+        if ( session.session_id in self.sessions ):
+            del( self.sessions[ session.session_id ] )
+        if ( session.protocol.transport is not None ):
+            # Could be none in the case of tests
+            session.protocol.transport.loseConnection()
         pass
 
     def fireEvent( self, event, session ):
         """ Fire the event """
         try:
-            event.fire( self, session )
+            #print event
+            return event.fire( self, session )
         except Exception as e:
-            print e
+            traceback.print_exc(file=sys.stdout)
             # Send back an error message to the client
-            session.sendEvent( ErrorEvent( e ) )
+            reply = event.reply( ErrorEvent, e )
+            session.sendEvent( reply )
 
     def sendGlobalEvent( self, event ):
         """ Send an event to all active sessions """

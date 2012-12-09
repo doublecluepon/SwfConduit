@@ -40,6 +40,7 @@ class Protocol( Protocol ):
         self.ostream    = self.encoder.stream
         self.decoder    = pyamf.get_decoder( self.encoding )
         self.istream    = self.decoder.stream
+        self.ipos       = 0
 
     def connectionMade( self ):
         """ Initialize a new user session """
@@ -51,23 +52,30 @@ class Protocol( Protocol ):
 
     def dataReceived( self, data ):
         """ Read an event from the data """
-        self.decoder.context.clear()
         # Add the data to the input stream
         self.istream.append( data )
-        self.istream.seek( 0 )
+        self.istream.seek( self.ipos )
 
         # Read all the objects from the data
         while ( not self.istream.at_eof() ):
             # Read the element from the decoder
             try:
+                # Always clear before a read
+                self.decoder.context.clear()
                 event = self.decoder.readElement()
+                self.ipos = self.istream.tell()
             except IOError as error:
-                print "IOError: Need more. Only got %i" % ( self.istream.remaining() )
+                #print "IOError: Need more. Only got %i" % ( self.istream.remaining() )
                 return # Not enough, wait for another dataReceived
             except pyamf.EOStream:
-                print "EOStream: Need more. Only got %i" % ( self.istream.remaining() )
-                print "Previous byte: %s" % ( self.istream.peek(-1) )
+                #print "EOStream: Need more. Only got %i" % ( self.istream.remaining() )
+                #print "Previous byte: %s" % ( self.istream.peek(-1) )
                 return # Not enough, wait for another dataReceived
+            except pyamf.DecodeError:
+                print "Invalid data: %s" % ( self.istream.getvalue() )
+                self.istream.truncate()
+                return
+
             if not isinstance( event, Event ):
                 print "Unknown event: %s" % event
             else:
@@ -75,7 +83,9 @@ class Protocol( Protocol ):
                 self.receiveEvent( event )
 
         # All objects read successfully, clear the istream
+        self.istream.seek(0)
         self.istream.truncate()
+        self.ipos = 0
 
     def sendEvent( self, event ):
         """ Send an event object to the client """
