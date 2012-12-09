@@ -54,7 +54,11 @@ class Server( twisted.internet.protocol.Factory ):
 
     def closeSession( self, session ):
         """ A session is closing, clean up after it """
-        del( self.sessions[ session.session_id ] )
+        if ( session.session_id in self.sessions ):
+            del( self.sessions[ session.session_id ] )
+        if ( session.protocol.transport is not None ):
+            # Could be none in the case of tests
+            session.protocol.transport.loseConnection()
         pass
 
     def fireEvent( self, event, session ):
