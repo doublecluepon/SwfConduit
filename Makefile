@@ -22,3 +22,7 @@ publish_docs : docs
 	git ci -am'build documentation'
 	git push
 	git checkout master
+
+clean:
+	cd flex; make clean
+	cd docs; make clean
