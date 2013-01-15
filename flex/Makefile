@@ -2,6 +2,13 @@ SWC = swfconduit.swc
 SRC = swfconduit
 DOCPATH = docs
 
+ifdef TARGET_PLAYER
+    COMPC_FLAGS += -target-player $(TARGET_PLAYER)
+endif
+ifdef SWF_VERSION
+    COMPC_FLAGS += -swf-version $(SWF_VERSION)
+endif
+
 swc : $(SWC)
 docs : $(SRC)
 	asdoc -source-path . -doc-sources swfconduit -output $(DOCPATH) \
@@ -13,5 +20,5 @@ clean :
 	-rm $(SWC)
 
 $(SWC) : $(SRC)
-	compc -include-sources $(SRC) -output $(SWC)
+	compc -include-sources $(SRC) $(COMPC_FLAGS) -output $(SWC)
 
