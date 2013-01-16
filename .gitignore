@@ -1,5 +1,6 @@
 *.swp
 *.pyc
-/build/
-/dist/
+build/
+dist/
 *.swc
+
