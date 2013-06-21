@@ -46,32 +46,53 @@ def _get_mod(modulePath):
     return aMod
 
 class Loader( object ):
-    """ Load a swfconduit """
+    """ Load up a swfconduit 
+
+    This class creates all the Twisted services needed to run the SwfConduit server.
+    """
 
     servers = []
     """ The list of servers we made """
 
     def add_server( self, config ):
-        """ Create the server from the given config """
-        # Start the appropriate listeners and set up connection handlers
-        module  = _get_mod( config["package"] )
+        """Create the server from the given config
 
-        # Init a new server
-        server  = module.Server(config)
-        self.servers.append( server )
+        Valid configuration keys are:
+
+        * server    The swfconduit.server.Server instance to add.
+        * proto     The protocol this server uses. Currently only "tcp" is supported.
+        * port      The port this server should listen on.
+        """
+        # Start the appropriate listeners and set up connection handlers
+        if "package" in config: # package is deprecated and will be removed
+            module  = _get_mod( config["package"] )
+            cls = module.Server
+            # Init a new server
+            server = cls(config)
+        elif "server" in config:
+            assert isinstance( config['server'], swfconduit.server.Server )
+            server = config["server"]
+        self.servers.append( {
+            "port": config['port'],
+            "proto": config['proto'],
+            "server": server,
+        } )
 
     def add_services( self, service_parent ):
-        """ Add services to the given twisted service_parent """
+        """ Add services to the given twisted service_parent.
+
+        This method is called automatically by get_application().
+        """
 
         # Create the service to serve the socket policy
         swfconduit.socketpolicy.add_service( service_parent, './socket-policy.xml' )
 
         for server in self.servers:
-            port    = int(server.config["port"])
-            proto   = server.config["proto"]
+            port    = int(server["port"])
+            proto   = server["proto"]
             if "tcp" in proto:
                 # Add a TCP listener to our server
-                twisted.application.internet.TCPServer( port, server ).setServiceParent( service_parent )
+                twisted.application.internet.TCPServer( port, server['server'] ).setServiceParent( service_parent )
 
     def load_from_config( self, filename ):
         """ Load settings from the configuration file """
@@ -87,7 +108,10 @@ class Loader( object ):
             self.add_server( config )
 
     def get_application( self ):
-        """ Get the twisted application with all the plugin services added """
+        """ Get the twisted application with all the plugin services added.
+
+        This should be the last thing you do in your twisted.tac file.
+        """
         service_parent = twisted.application.service.MultiService()
 
         self.add_services( service_parent )

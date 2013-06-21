@@ -20,7 +20,9 @@ A Server handles the overall persistence and events. It connects to databases,
 manages Sessions, caches data, handles world persistence, and does the final
 firing of Events.
 
-Your Server subclass should add any necessary properties like DB connections.
+The default server does nothing. You must create a subclass of server to do
+what you want to do. Your Server subclass should add any necessary properties
+like DB connections.
 
 """
 
@@ -42,7 +44,7 @@ class Server( twisted.internet.protocol.Factory ):
     # Prepare a callLater to override for testing
     callLater   = reactor.callLater
 
-    def __init__( self, cfg ):
+    def __init__( self, cfg=None ):
         """ Init a new Server with the given configuration """
         self.config = cfg
 

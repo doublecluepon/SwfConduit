@@ -1,13 +1,18 @@
 
-import os, sys, types
+# First, load our server module
+from swfconduit.server import Server
 
-# Add current bin and lib directories
-current_dir  = os.getcwd()
-sys.path.append( current_dir )
 
+# Give our server module to swfconduit and start the server
 from swfconduit.loader import Loader
 
 loader  = Loader()
-loader.load_from_config( os.path.join( current_dir, "swfconduit.ini" ) )
+loader.add_server(
+    {
+        "port": 8000,
+        "proto": "tcp",
+        "server": Server(),
+    }
+)
 application = loader.get_application()
 
