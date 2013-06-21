@@ -3,26 +3,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Event &mdash; SwfConduit v1.0.0 documentation</title>
+    <title>Event &mdash; SwfConduit 1.0.0 documentation</title>
+    
     <link rel="stylesheet" href="static/default.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <link rel="top" title="SwfConduit v1.0.0 documentation" href="index.html" />
+    <link rel="top" title="SwfConduit 1.0.0 documentation" href="index.html" />
     <link rel="next" title="Socket Policy" href="socketpolicy.html" />
     <link rel="prev" title="Server" href="server.html" /> 
   </head>
@@ -42,7 +45,7 @@
         <li class="right" >
           <a href="server.html" title="Server"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">SwfConduit v1.0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">SwfConduit 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -81,6 +84,11 @@ mypackage.events.MyEvent object, and any incoming AS3 Events of type
 </div>
 <p>All events&#8217; properties need to be defined in both server and client.
 otherwise the client will warn about missing properties.</p>
+<dl class="function">
+<dt id="swfconduit.event.getrandbits">
+<tt class="descclassname">swfconduit.event.</tt><tt class="descname">getrandbits</tt><big>(</big><em>k</em><big>)</big> &rarr; x.  Generates a long int with k random bits.<a class="headerlink" href="#swfconduit.event.getrandbits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="class">
 <dt id="swfconduit.event.Event">
 <em class="property">class </em><tt class="descclassname">swfconduit.event.</tt><tt class="descname">Event</tt><a class="headerlink" href="#swfconduit.event.Event" title="Permalink to this definition">¶</a></dt>
@@ -88,6 +96,12 @@ otherwise the client will warn about missing properties.</p>
 <dt id="swfconduit.event.Event.fire">
 <tt class="descname">fire</tt><big>(</big><em>server</em>, <em>session</em><big>)</big><a class="headerlink" href="#swfconduit.event.Event.fire" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform the event&#8217;s task</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swfconduit.event.Event.reply">
+<tt class="descname">reply</tt><big>(</big><em>cls</em>, <em>*args</em><big>)</big><a class="headerlink" href="#swfconduit.event.Event.reply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a reply with the given class. Will set the reply&#8217;s id field appropriately</p>
 </dd></dl>
 
 </dd></dl>
@@ -109,7 +123,7 @@ otherwise the client will warn about missing properties.</p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -138,12 +152,12 @@ otherwise the client will warn about missing properties.</p>
         <li class="right" >
           <a href="server.html" title="Server"
              >previous</a> |</li>
-        <li><a href="index.html">SwfConduit v1.0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">SwfConduit 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Double Cluepon Software.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
