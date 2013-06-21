@@ -1,0 +1,66 @@
+Our documentation is located on the Github wiki: [SwfConduit Github Wiki](https://github.com/doublecluepon/SwfConduit/wiki)
+
+An event-driven, bidirectional Flash socket server written in Python using 
+Twisted and PyAMF. 
+
+SwfConduit allows you to asynchronously communicate between the server and 
+clients by passing event objects over a bidirectional AMF3 socket. SwfConduit 
+uses full objects, so no messing around with serialization on either client
+or server, it all happens automatically!
+
+SwfConduit will be powering Emerald Kingdom, an MMORPG written in AS3,
+and StoryTeller, the Emerald Kingdom world builder.
+
+This is a 1.0 release. It contains:
+
+1. An event-based client library for async communication with the SWFConduit server
+written in AS3
+2. An OO server system based on Twisted and PyAMF
+
+SwfConduit Requirements:
+
+1. Python 2.6
+2. Twisted
+3. PyAMF 0.6 (available from http://pyamf.org)
+
+Client Requirements:
+
+1. AMF3
+    * AMF0 does not support full object serialization
+2. Flash clients require AS3
+    * AS1/2 do not support raw binary sockets
+
+Planned features for the 1.0 development cycle
+
+* Automated unit testing
+* Autogenerate the socket-policy.xml file
+* Encryption
+* Set of plugins for common tasks such as ORM, Users, and Chat
+* More documentation and examples on how to write clients
+
+Planned features for future releases
+
+* UDP support
+    * Speed at the cost of reliability
+* Inter-server communications
+* Server clusters
+    * Sessions are opened on unburneded server
+    * Sessions can be moved from server to server to balance load and create a 
+    * single world
+
+To run SwfConduit:
+
+```bash
+twistd -ny swfconduit.tac
+```
+
+To build modules for SwfConduit, look at 
+
+1. swfconduit.server
+    * A server. Each application should have one
+2. swfconduit.session
+    * Keeps track of session state. Extend to add more tracking
+3. swfconduit.event
+    * A message to/from client/server. Each type of message needs an Event class
+
+Be sure to edit the socket-policy.xml file for each server you add.
